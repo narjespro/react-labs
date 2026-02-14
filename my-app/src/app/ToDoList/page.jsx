@@ -238,11 +238,40 @@ export default function TodoUI() {
     setTodos(newTodos);
   };
 
+  const addTodo = () => {
+    if (inputValue.trim() === "") return;
+
+    setTodos([...todos, { text: inputValue, completed: false }]);
+    setInputValue("");
+  };
+
+  const [inputValue, setInputValue] = useState("");
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && inputValue.trim() !== "") {
+      setTodos([...todos, { text: inputValue, completed: false }]);
+      setInputValue(""); // خالی کردن input بعد از اضافه شدن
+    }
+  };
   return (
-    <div className="bg-gray-100">
+    <div className="bg-gray-200">
       <div className="flex items-center justify-center h-screen">
-        <div className="w-full px-4 py-8 mx-auto shadow lg:w-1/3 bg-white">
+        <div className="w-full px-4 py-8 mx-auto shadow lg:w-1/3 bg-gray-100">
           <h1 className="mb-6 text-4xl font-bold text-purple-600">TO DO APP</h1>
+          <div className="mb-4">
+            <input
+              type="text"
+              placeholder="Add a new task"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              // onKeyDown={(e) => {
+              //   if (e.key === "enter") {
+              //     addTodo();
+              //   }
+              // }}
+              onKeyDown={handleKeyDown}
+              className="w-full py-2 border rounded outline-none focus:ring-2 focus: ring-purple-500 bg-blue-200 text-black"
+            />
+          </div>
 
           <ul className="list-reset">
             {todos.map((todo, index) => (
